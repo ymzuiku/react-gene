@@ -1,3 +1,3 @@
-# react-a
+# react-gene
 
 Use pixi.js
