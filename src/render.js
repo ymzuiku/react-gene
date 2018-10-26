@@ -1,7 +1,8 @@
 import ReactReconciler from 'react-reconciler';
 import createApp from './createApp';
 import { appProps } from './props';
-import createSprite from './createSprite';
+import layerCreate from './layerCreate';
+import layerUpdate from './layerUpdate';
 
 const rootHostContext = {};
 const childHostContext = {};
@@ -21,7 +22,7 @@ const hostConfig = {
       typeof props.children === 'string' ||
       typeof props.children === 'number'
     ) {
-      return createSprite.text(props);
+      return layerCreate.text(props);
     }
   },
   createInstance: (
@@ -31,22 +32,7 @@ const hostConfig = {
     _currentHostContext,
     workInProgress,
   ) => {
-    const ele = createSprite[type](props);
-    Object.keys(props).forEach(propName => {
-      const propValue = props[propName];
-      if (propName === 'children') {
-        //
-      } else if (propName === 'onClick') {
-        ele.addEventListener('click', propValue);
-      } else {
-        if (typeof ele._customApplyProps === 'function') {
-          ele._customApplyProps(ele, {}, props);
-        } else {
-          ele[propName] = propValue;
-        }
-      }
-    });
-    return ele;
+    return layerCreate[type](props);
   },
   createTextInstance: text => {
     return null;
@@ -59,8 +45,7 @@ const hostConfig = {
   },
   appendChild(parent, child) {
     if (child) {
-      // parent.addChild(child);
-      parent.removeChild(child);
+      // parent.removeChild(child);
       parent.addChild(child);
       if (typeof child._customDidAttach === 'function') {
         child._customDidAttach(child);
@@ -76,28 +61,9 @@ const hostConfig = {
   prepareUpdate(ele, oldProps, newProps) {
     return true;
   },
-  commitUpdate(ele, updatePayload, type, oldProps, newProps) {
-    Object.keys(newProps).forEach(propName => {
-      const propValue = newProps[propName];
-      if (type === 'text' && propName === 'children') {
-        if (Object.prototype.toString.call(propValue) === '[object Array]') {
-          if (
-            typeof propValue[0] === 'string' ||
-            typeof propValue[0] === 'number'
-          ) {
-            let str = '';
-            for (let i = 0; i < propValue.length; i++) {
-              str += String(propValue[i]);
-            }
-            ele.text = str;
-          }
-        }
-      } else if (propName === 'children') {
-      } else {
-        const propValue = newProps[propName];
-        ele[propName] = propValue;
-      }
-    });
+  commitUpdate(ele, updatePayload, type, oldProps, props) {
+    if (oldProps === props) return;
+    layerUpdate[type](ele, updatePayload, type, oldProps, props);
   },
   commitTextUpdate(textInstance, oldText, newText) {
     textInstance.text = newText;
@@ -123,10 +89,12 @@ export default function(reactElement, createAppOptions = appProps, callback) {
     rootContainer = ReactReconcilerInst.createContainer(app.stage, false);
   }
   // update the root Container
-  return ReactReconcilerInst.updateContainer(
-    reactElement,
-    rootContainer,
-    null,
-    callback,
-  );
+  setTimeout(() => {
+    ReactReconcilerInst.updateContainer(
+      reactElement,
+      rootContainer,
+      null,
+      callback,
+    );
+  }, 17);
 }
