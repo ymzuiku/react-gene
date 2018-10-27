@@ -32,6 +32,16 @@ export default {
     setProps(ele, rest);
     return ele;
   },
+  tilingSprite: function(props) {
+    const ele = new PIXI.extras.TilingSprite(
+      props.texture,
+      props.width,
+      props.height,
+    );
+    const { children, ...rest } = props;
+    setProps(ele, rest);
+    return ele;
+  },
   sprite: function(props) {
     let ele;
     if (props.src) {
@@ -66,18 +76,6 @@ export default {
     }
     const { children, ...rest } = props;
     setProps(ele, rest);
-    return ele;
-  },
-  tilingSprite: function(props) {
-    const ele = new PIXI.extras.TilingSprite(
-      props.texture,
-      props.width,
-      props.height,
-    );
-    const { children, ...rest } = props;
-    for (let k in rest) {
-      ele[k] = rest[k];
-    }
     return ele;
   },
   view: function(props) {

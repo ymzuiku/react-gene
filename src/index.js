@@ -1,8 +1,8 @@
-import * as _pixi from 'pixi.js';
+import * as PIXI from 'pixi.js';
 import render from './render';
 import createApp from './createApp';
-_pixi.utils.sayHello = function() {
+PIXI.utils.sayHello = function() {
   console.log('webgl-app: init');
 };
 
-export { render, _pixi, createApp };
+export { render, PIXI, createApp };

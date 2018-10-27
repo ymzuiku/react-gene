@@ -6,6 +6,8 @@ import layerUpdate from './layerUpdate';
 
 const rootHostContext = {};
 const childHostContext = {};
+let app;
+let rootContainer;
 
 const hostConfig = {
   now: Date.now,
@@ -18,12 +20,12 @@ const hostConfig = {
     return childHostContext;
   },
   shouldSetTextContent: (type, props) => {
-    if (
-      typeof props.children === 'string' ||
-      typeof props.children === 'number'
-    ) {
-      return layerCreate.text(props);
-    }
+    // if (
+    //   typeof props.children === 'string' ||
+    //   typeof props.children === 'number'
+    // ) {
+    //   return layerCreate.text(props);
+    // }
   },
   createInstance: (
     type,
@@ -47,9 +49,9 @@ const hostConfig = {
     if (child) {
       // parent.removeChild(child);
       parent.addChild(child);
-      if (typeof child._customDidAttach === 'function') {
-        child._customDidAttach(child);
-      }
+      // if (typeof child._customDidAttach === 'function') {
+      //   child._customDidAttach(child);
+      // }
     }
   },
   appendChildToContainer: (parent, child) => {
@@ -59,11 +61,14 @@ const hostConfig = {
   },
   finalizeInitialChildren: (ele, type, props) => {},
   prepareUpdate(ele, oldProps, newProps) {
+    console.log('a');
     return true;
   },
   commitUpdate(ele, updatePayload, type, oldProps, props) {
-    if (oldProps === props) return;
-    layerUpdate[type](ele, updatePayload, type, oldProps, props);
+    if (updatePayload) {
+    console.log('b');
+      layerUpdate[type](ele, updatePayload, type, oldProps, props);
+    }
   },
   commitTextUpdate(textInstance, oldText, newText) {
     textInstance.text = newText;
@@ -81,8 +86,6 @@ const hostConfig = {
 };
 
 const ReactReconcilerInst = ReactReconciler(hostConfig);
-let app;
-let rootContainer;
 export default function(reactElement, createAppOptions = appProps, callback) {
   if (!app) {
     app = createApp(createAppOptions);
@@ -96,5 +99,5 @@ export default function(reactElement, createAppOptions = appProps, callback) {
       null,
       callback,
     );
-  }, 17);
+  }, 21);
 }

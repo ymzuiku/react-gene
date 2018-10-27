@@ -18,6 +18,10 @@ export default {
     const { children, ...rest } = props;
     setProps(ele, rest);
   },
+  tilingSprite: function(ele, updatePayload, type, oldProps, props) {
+    const { children, ...rest } = props;
+    setProps(ele, rest);
+  },
   sprite: function(ele, updatePayload, type, oldProps, props) {
     const { children, src, ...rest } = props;
     setProps(ele, rest);
@@ -40,10 +44,6 @@ export default {
         ele.text = str;
       }
     }
-    setProps(ele, rest);
-  },
-  tilingSprite: function(ele, updatePayload, type, oldProps, props) {
-    const { children, ...rest } = props;
     setProps(ele, rest);
   },
   view: function(ele, updatePayload, type, oldProps, props) {

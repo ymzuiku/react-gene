@@ -7,7 +7,7 @@ export const appProps = {
   antialias: true,
   preserveDrawingBuffer: false,
   resolution: 2, // defalut 1, The resolution / device pixel ratio of the renderer, retina would be 2
-  forceCanvas: false,
+  forceCanvas: true,
   backgroundColor: 0xf3f3f3,
   clearBeforeRender: true,
   roundPixels: false,
